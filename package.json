@@ -1,0 +1,16 @@
+{
+  "name": "lucky-draw",
+  "version": "0.1.0",
+  "description": "럭키드로우 경품 추첨 원판 — 무서버 정적 SPA (순수 HTML + TS + SVG)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "python3 -m http.server 5173",
+    "dev": "echo '터미널 1: npm run watch · 터미널 2: npm run serve → http://localhost:5173'"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,487 @@
+/*
+  럭키드로우 — 스타일
+  명세 8장(Anti-AI-Slop)을 MUST로 따른다:
+  · 무채색 베이스 + 액센트 1색(의미/위계에만 사용)
+  · 그라데이션·색 그림자·글로우·glassmorphism·장식 모션 금지
+  · 구획은 1px solid border + 여백으로, border-radius 0~8px
+  · transition은 기능적 상태 변화(색·투명도)에만, 150ms 이하
+  · 예외: 원판 회전 애니메이션(결과 전달 수단)은 허용 — wheel 관련 클래스에 한정
+*/
+
+:root {
+  /* 무채색 베이스 (IBM Carbon gray 계열) */
+  --bg: #ffffff;
+  --surface: #f4f4f4;
+  --surface-2: #e8e8e8;
+  --border: #e0e0e0;
+  --border-strong: #8d8d8d;
+  --text: #161616;
+  --text-secondary: #525252;
+  --text-disabled: #a8a8a8;
+
+  /* 액센트 1색 — 당첨/포인터/주 액션 등 '의미'에만 사용 */
+  --accent: #0f62fe;
+  --accent-hover: #0353e9;
+  --accent-text: #ffffff;
+
+  /* 꽝 = 중성 회색 (색만으로 구분하지 않으므로 라벨도 병기) */
+  --miss: #6f6f6f;
+
+  --font-sans: "IBM Plex Sans KR", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.06); /* 중성 회색 1단계만 */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--bg);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 번호·카운트·시각은 고정폭(tabular)으로 정렬 가독성 확보 */
+.mono,
+.count,
+time {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ── 공통 타이포 위계: 크기·굵기·여백으로만 ───────────────── */
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+  font-size: 15px;
+}
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+/* ── 버튼 ─────────────────────────────────────────────── */
+button {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+button:hover:not(:disabled) {
+  background: var(--surface);
+}
+button:disabled {
+  color: var(--text-disabled);
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+button.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+button.primary:disabled {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-disabled);
+}
+button.lg {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 14px 28px;
+}
+
+/* ── 입력 ─────────────────────────────────────────────── */
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+textarea,
+input[type="number"],
+select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+textarea {
+  min-height: 200px;
+  resize: vertical;
+  line-height: 1.6;
+}
+textarea:focus,
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+/* ── 설정 화면 ─────────────────────────────────────────── */
+.setup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.field {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+.field-help {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 6px 0 10px;
+}
+.field-count {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.field-count strong {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+.warn {
+  color: var(--miss);
+  font-size: 13px;
+  margin-top: 8px;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+}
+.options input[type="checkbox"] {
+  width: auto;
+}
+.setup-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── 추첨 화면 ─────────────────────────────────────────── */
+.draw-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.draw-header .round {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.draw-header .current {
+  font-size: 22px;
+  font-weight: 600;
+}
+.draw-header .current .name {
+  color: var(--accent);
+}
+
+.draw-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.draw-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 결과 배너 — 색만이 아니라 텍스트 라벨로도 상태 전달(UI-2) */
+.result-banner {
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 17px;
+  font-weight: 600;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.result-banner.win {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.result-banner.miss {
+  color: var(--miss);
+}
+.result-banner .tag {
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── 사이드 패널: 상태 표시줄 + 당첨자 명단 ───────────────── */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.statusbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.statusbar .stat {
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.statusbar .stat:last-child {
+  border-right: none;
+}
+.statusbar .stat .value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 24px;
+  font-weight: 600;
+}
+.statusbar .stat .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.winners {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.winners h2 {
+  margin: 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+}
+.winners ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.winners li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.winners li:last-child {
+  border-bottom: none;
+}
+.winners li .who {
+  font-weight: 600;
+}
+.winners li .prize {
+  color: var(--accent);
+}
+.winners li.is-miss .prize {
+  color: var(--miss);
+}
+.winners li time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ── 종료 화면 ─────────────────────────────────────────── */
+.finished-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.finished-actions {
+  display: flex;
+  gap: 12px;
+}
+.legend {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+.legend h2 {
+  font-size: 14px;
+}
+.legend ol {
+  margin: 0;
+  padding-left: 20px;
+  columns: 2;
+  font-size: 14px;
+}
+
+/* ── 모달(초기화 확인) ─────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  max-width: 420px;
+  width: 100%;
+  padding: 24px;
+}
+.modal h2 {
+  margin-top: 0;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ── 원판(SVG) ─────────────────────────────────────────
+   회전 애니메이션은 명세 8.1의 '장식 모션 금지' 예외.
+   결과를 먼저 정하고 그 각도로 transition을 역산해 적용한다(FR-3.3). */
+.wheel-wrap {
+  position: relative;
+  width: min(70vmin, 480px);
+  aspect-ratio: 1 / 1;
+}
+.wheel {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wheel-rotor {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  /* 기본은 정지. 회전 시 JS가 transition + transform을 인라인으로 설정한다. */
+}
+/* 고정 포인터(원판 위 12시 방향) — 액센트색으로 '여기서 멈춘다'는 의미 전달 */
+.wheel-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 22px solid var(--accent);
+  z-index: 2;
+}
+.sector-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--text);
+}
+.sector-label.on-accent {
+  fill: var(--accent-text);
+}
+
+/* ── 반응형: 모바일/태블릿에서 원판과 명단을 세로 재배치(UI-3) ── */
+@media (max-width: 860px) {
+  .setup-grid {
+    grid-template-columns: 1fr;
+  }
+  .draw-grid {
+    grid-template-columns: 1fr;
+  }
+  .legend ol {
+    columns: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* 회전 시간은 JS가 짧게 설정한다(wheel.ts 참조). */
+  * {
+    scroll-behavior: auto;
+  }
+}
