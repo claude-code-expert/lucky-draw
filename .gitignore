@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# 개인 프롬프트 추출 도구 및 산출물 (프로젝트 소스 아님)
+extract-my-prompts.sh
+my-prompts.md

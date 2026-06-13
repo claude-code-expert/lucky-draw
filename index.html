@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>럭키드로우 추첨 원판</title>
+
+  <!--
+    폰트: 명세 8.2는 IBM Plex Sans KR(본문/UI) + IBM Plex Mono(번호/수치)를 강제한다.
+    Google Fonts CDN으로 로드하되, 네트워크가 없으면 시스템 폰트로 안전하게 폴백한다.
+    (NFR-5: 추첨 '로직'은 네트워크 없이 동작 — 폰트만 폴백되며 기능은 영향 없음.)
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- 모든 화면은 TS(ui.ts)가 이 마운트 지점에 렌더링한다. -->
+  <main id="app" aria-live="polite"></main>
+
+  <script type="module" src="./dist/main.js"></script>
+</body>
+</html>
